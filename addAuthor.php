@@ -37,7 +37,12 @@ if($post['submit']){
     $email = $post['email'];
 
     $database->query('INSERT INTO people (id, first_name, last_name, url, email) VALUES (:id, :first_name, :last_name, :url, :email)');
-    $database->bind(':id', $id);
+    if($id){
+        $database->bind(':id', $id);
+    }
+    else{
+        $database->bind(':id', NULL);
+    }
     $database->bind(':first_name', $first_name);
     $database->bind(':last_name', $last_name);
     $database->bind(':url', $url);
@@ -64,25 +69,25 @@ if($post['submit']){
         <div class="form-group row">
             <label class="col-sm-2">First Name</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="id" placeholder="First Name" />
+                <input type="text" class="form-control" name="first_name" placeholder="First Name" />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2">Last Name</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="id" placeholder="Last Name" />
+                <input type="text" class="form-control" name="last_name" placeholder="Last Name" />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2">Author's URL</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="id" placeholder="URL" />
+                <input type="text" class="form-control" name="url" placeholder="URL" />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2">Author's Email</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="id" placeholder="Email" />
+                <input type="text" class="form-control" name="email" placeholder="Email" />
             </div>
         </div>
         <div class="form-group row">

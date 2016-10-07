@@ -3,6 +3,16 @@
     <title>Admin - Add Post</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/stylesheet.css" rel="stylesheet">
+    <script>
+        var recipe = {
+            title : "Molé",
+            serving : 2,
+            ingredients : ["cinnamon","cumin","cocoa"]
+        };
+        console.log(recipe.title);
+        console.log(recipe.serving);
+        console.log(recipe.ingredients);
+    </script>
 </head>
 <?php
 include "includes.php";
@@ -37,7 +47,12 @@ if($post['submit']){
     $tag_id = $post['tag_id'];
 
     $database->query('INSERT INTO blogposts (id, title, body, author_id, timestamp) VALUES (:id, :title, :body, :author_id, CURRENT_TIMESTAMP)');
-    $database->bind(':id', $id);
+    if($id){
+        $database->bind(':id', $id);
+    }
+    else{
+        $database->bind(':id', NULL);
+    }
     $database->bind(':title', $title);
     $database->bind(':body', $body);
     $database->bind(':author_id', $author_id);
@@ -46,8 +61,14 @@ if($post['submit']){
         $success = 'Post Added.';
     }
 
-    $database->query('INSERT INTO blogPost_tags (post_id, tag_id) VALUES (:post_id, :tag_id)');
-    $database->bind(':post_id', $id);
+    $database->query('INSERT INTO blogPost_tags (tagCol_id, post_id, tag_id) VALUES (:tagCol_id, :post_id, :tag_id)');
+    $database->bind(':tagCol_id', NULL);
+    if($id){
+        $database->bind(':post_id', $id);
+    }
+    else{
+        $database->bind(':post_id', $database->lastInsertID());
+    }
     $database->bind(':tag_id', $tag_id);
     $database->execute();
     if($database->lastInsertID()){

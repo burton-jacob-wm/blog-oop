@@ -34,7 +34,12 @@ if($post['submit']){
     $tag = $post['tag'];
 
     $database->query('INSERT INTO tags (id, tag) VALUES (:id, :tag)');
-    $database->bind(':id', $id);
+    if($id){
+        $database->bind(':id', $id);
+    }
+    else{
+        $database->bind(':id', NULL);
+    }
     $database->bind(':tag', $tag);
     $database->execute();
     if($database->lastInsertID()){
@@ -59,7 +64,7 @@ if($post['submit']){
         <div class="form-group row">
             <label class="col-sm-2">Tag Name</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="id" placeholder="Tag Name" />
+                <input type="text" class="form-control" name="tag" placeholder="Tag Name" />
             </div>
         </div>
         <div class="form-group row">
